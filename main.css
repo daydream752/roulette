@@ -62,3 +62,23 @@ body {
   text-decoration: none;
   font-weight: 700;
 }
+
+.main-footer {
+  padding: 12px 20px 20px;
+}
+
+.main-ad-wrap {
+  width: min(980px, 100%);
+  margin: 0 auto;
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.main-ad-label {
+  font-size: 0.72rem;
+  color: #94a3b8;
+  margin-bottom: 8px;
+  letter-spacing: 0.06em;
+}
