@@ -1,0 +1,2458 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>입력 숫자 확인</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1 class="app-title"><a class="app-title-link" href="main.html">ROLLING DICE</a></h1>
+    <button id="openPageSettingsBtn" type="button" aria-label="페이지 설정 열기">⚙</button>
+  </header>
+  <button id="openSidebarBtn" type="button" aria-label="사이드바 펼치기">≡</button>
+  <button id="openRightSidebarBtn" type="button" aria-label="오른쪽 사이드바 펼치기">≡</button>
+  <div class="layout">
+    <aside class="sidebar left-sidebar">
+      <div class="sidebar-top">
+        <button id="toggleSidebarBtn" type="button">≡</button>
+        <span class="sidebar-title">입력 패널</span>
+      </div>
+      <div class="player-count-control">
+        <label class="style-label" for="playerCountInput">인원수</label>
+        <div class="player-count-row">
+          <button id="decreasePlayerBtn" type="button" aria-label="인원수 감소">-</button>
+          <input id="playerCountInput" type="number" min="1" step="1" value="1" readonly />
+          <button id="increasePlayerBtn" type="button" aria-label="인원수 증가">+</button>
+        </div>
+      </div>
+      <div class="player-name-control">
+        <label class="style-label">인원 이름(사각형을 클릭해보세요)</label>
+        <div id="playerNameList" class="player-name-list"></div>
+      </div>
+      <p class="sidebar-help">숫자를 입력하고 확인을 눌러주세요.</p>
+
+      <details class="sidebar-group" open>
+        <summary class="sidebar-group-title">숫자 설정</summary>
+        <div class="sidebar-group-content">
+          <div class="sidebar-form">
+            <div class="row">
+              <select id="numberInput"></select>
+              <button id="checkBtn" type="button">확인</button>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <details class="sidebar-group" open>
+        <summary class="sidebar-group-title">주사위</summary>
+        <div class="sidebar-group-content">
+          <div class="dice-style-form">
+            <div id="diceRow1" class="dice-side-row">
+              <div class="dice-toggle-row">
+                <span class="style-label">주사위 1</span>
+                <label class="toggle-switch">
+                  <input id="dice1Enabled" type="checkbox" checked />
+                  <span class="toggle-slider" aria-hidden="true"></span>
+                </label>
+              </div>
+              <label class="style-label" for="dice1MinInput">주사위 1 최소값(0~100)</label>
+              <input id="dice1MinInput" type="number" min="0" max="100" value="1" />
+              <label class="style-label" for="dice1MaxInput">주사위 1 최대값(0~100)</label>
+              <input id="dice1MaxInput" type="number" min="0" max="100" value="6" />
+            </div>
+            <div id="diceRow2" class="dice-side-row">
+              <div class="dice-toggle-row">
+                <span class="style-label">주사위 2</span>
+                <label class="toggle-switch">
+                  <input id="dice2Enabled" type="checkbox" />
+                  <span class="toggle-slider" aria-hidden="true"></span>
+                </label>
+              </div>
+              <label class="style-label" for="dice2MinInput">주사위 2 최소값(0~100)</label>
+              <input id="dice2MinInput" type="number" min="0" max="100" value="1" />
+              <label class="style-label" for="dice2MaxInput">주사위 2 최대값(0~100)</label>
+              <input id="dice2MaxInput" type="number" min="0" max="100" value="6" />
+            </div>
+            <div id="diceRow3" class="dice-side-row">
+              <div class="dice-toggle-row">
+                <span class="style-label">주사위 3</span>
+                <label class="toggle-switch">
+                  <input id="dice3Enabled" type="checkbox" />
+                  <span class="toggle-slider" aria-hidden="true"></span>
+                </label>
+              </div>
+              <label class="style-label" for="dice3MinInput">주사위 3 최소값(0~100)</label>
+              <input id="dice3MinInput" type="number" min="0" max="100" value="1" />
+              <label class="style-label" for="dice3MaxInput">주사위 3 최대값(0~100)</label>
+              <input id="dice3MaxInput" type="number" min="0" max="100" value="6" />
+            </div>
+
+            <button id="rollDiceBtn" type="button">주사위 굴리기</button>
+            <div id="diceResult" class="dice-result"></div>
+            <label class="style-label" for="diceTextSizeInput">결과 글자 크기</label>
+            <input id="diceTextSizeInput" type="number" min="10" max="32" value="14" />
+            <label class="style-label" for="diceTextColorInput">결과 글자 색</label>
+            <input id="diceTextColorInput" type="color" value="#e5e7eb" />
+            <label class="style-label" for="diceTextFamilyInput">결과 글꼴</label>
+            <select id="diceTextFamilyInput">
+              <option value="Arial, sans-serif">Arial</option>
+              <option value="'Malgun Gothic', sans-serif">Malgun Gothic</option>
+              <option value="'맑은 고딕', sans-serif">맑은 고딕</option>
+              <option value="'Noto Sans KR', sans-serif">Noto Sans KR</option>
+              <option value="'Courier New', monospace">Courier New</option>
+            </select>
+          </div>
+        </div>
+      </details>
+
+      <details class="sidebar-group">
+        <summary class="sidebar-group-title">텍스트 설정</summary>
+        <div class="sidebar-group-content">
+          <div class="text-style-form">
+            <label class="style-label" for="fontSizeInput">글자 크기</label>
+            <input id="fontSizeInput" type="number" min="8" max="24" value="10" />
+
+            <label class="style-label" for="fontColorInput">글자 색</label>
+            <input id="fontColorInput" type="color" value="#111827" />
+
+            <label class="style-label" for="fontFamilyInput">글꼴</label>
+            <select id="fontFamilyInput">
+              <option value="Arial, sans-serif">Arial</option>
+              <option value="'Malgun Gothic', sans-serif">Malgun Gothic</option>
+              <option value="'맑은 고딕', sans-serif">맑은 고딕</option>
+              <option value="'Noto Sans KR', sans-serif">Noto Sans KR</option>
+              <option value="'Courier New', monospace">Courier New</option>
+            </select>
+          </div>
+        </div>
+      </details>
+
+      <details class="sidebar-group">
+        <summary class="sidebar-group-title">상자 설정</summary>
+        <div class="sidebar-group-content">
+          <div class="box-style-form">
+            <label class="style-label" for="boxShapeInput">상자 모양</label>
+            <select id="boxShapeInput">
+              <option value="square">기본 상자</option>
+              <option value="rounded">둥근 상자</option>
+              <option value="circle">원형 상자</option>
+              <option value="diamond">마름모 상자</option>
+              <option value="ticket">티켓 상자</option>
+              <option value="hexagon">육각형 상자</option>
+            </select>
+
+            <label class="style-label" for="boxRadiusInput">모서리 각도(px)</label>
+            <input id="boxRadiusInput" type="number" min="0" max="30" value="0" />
+
+            <label class="style-label" for="boxFillColorInput">배경색</label>
+            <input id="boxFillColorInput" type="color" value="#f4f4f4" />
+
+            <label class="style-label" for="boxBorderWidthInput">테두리 굵기(px)</label>
+            <input id="boxBorderWidthInput" type="number" min="0" max="10" value="2" />
+
+            <label class="style-label" for="boxBorderColorInput">테두리 색</label>
+            <input id="boxBorderColorInput" type="color" value="#333333" />
+
+            <label class="style-label" for="boxImageInput">상자 이미지</label>
+            <input id="boxImageInput" type="file" accept="image/*" />
+            <button id="clearBoxImageBtn" type="button">상자 이미지 제거</button>
+          </div>
+        </div>
+      </details>
+
+      <details class="sidebar-group">
+        <summary class="sidebar-group-title">배경 설정</summary>
+        <div class="sidebar-group-content">
+          <div class="background-style-form">
+            <label class="style-label" for="backgroundColorInput">배경 색</label>
+            <input id="backgroundColorInput" type="color" value="#ffffff" />
+
+            <label class="style-label" for="backgroundImageInput">배경 이미지</label>
+            <input id="backgroundImageInput" type="file" accept="image/*" />
+            <button id="clearBackgroundImageBtn" type="button">배경 이미지 제거</button>
+          </div>
+        </div>
+      </details>
+
+      <details class="sidebar-group">
+        <summary class="sidebar-group-title">가운데 텍스트</summary>
+        <div class="sidebar-group-content">
+          <div class="center-text-form">
+            <label class="style-label" for="centerTextInput">가운데 텍스트</label>
+            <textarea id="centerTextInput" rows="3" placeholder="가운데에 표시할 텍스트"></textarea>
+          </div>
+        </div>
+      </details>
+
+      <details class="sidebar-group">
+        <summary class="sidebar-group-title">목록</summary>
+        <div class="sidebar-group-content">
+          <div class="sidebar-list-wrap">
+            <ul id="numberList" class="number-list"></ul>
+          </div>
+        </div>
+      </details>
+
+      <div class="reset-settings-wrap">
+        <button id="resetAllSettingsBtn" type="button">설정 초기화</button>
+      </div>
+    </aside>
+
+    <aside class="sidebar right-sidebar">
+      <div class="sidebar-top">
+        <button id="openCamSettingsBtn" type="button" aria-label="캠 패널 설정 열기">⚙</button>
+        <button id="toggleRightSidebarBtn" type="button" aria-label="오른쪽 사이드바 접기">≡</button>
+        <span id="camPanelTitle" class="sidebar-title">캠 패널</span>
+      </div>
+      <p id="camPanelHelp" class="sidebar-help">버튜버/스트리머 캠 화면 배치용 영역</p>
+      <div id="cameraSlot" class="camera-slot">
+        <div id="cameraSlotLabel" class="camera-slot-label">CAM</div>
+      </div>
+      <button id="resetGameBtn" type="button" class="reset-game-btn">게임 초기화</button>
+    </aside>
+
+    <main class="content">
+      <div id="boxContainer"></div>
+      <div id="centerTextOverlay" class="center-text-overlay">
+        <div id="centerDiceOverlay" class="center-dice-overlay" aria-hidden="true"></div>
+        <div id="centerDiceResult" class="center-dice-result" aria-live="polite"></div>
+        <div id="centerTextDisplay" class="center-text-display"></div>
+      </div>
+    </main>
+  </div>
+
+  <footer class="app-footer">
+    <div class="ad-banner-wrap">
+      <div class="ad-banner-label">ADVERTISEMENT</div>
+      <!-- Google AdSense 배너 자리 -->
+      
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6275594997985179"
+              crossorigin="anonymous"></script>
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-6275594997985179"
+           data-ad-slot="8625515571"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+      
+      <div class="ad-banner-placeholder">Google Ads Banner Area</div>
+    </div>
+  </footer>
+
+  <div id="roleModal" class="role-modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="role-modal-backdrop" data-close="1"></div>
+    <div class="role-modal-content">
+        <div class="role-modal-header">
+        <div class="role-modal-title">특수칸 지정</div>
+        <button id="roleModalCloseBtn" type="button" class="role-modal-close" aria-label="닫기">
+          ×
+        </button>
+      </div>
+
+      <div class="role-modal-body">
+        <label class="style-label" for="roleSelect">특수칸</label>
+        <select id="roleSelect"></select>
+        <label class="style-label" for="roleNInput">n</label>
+        <input id="roleNInput" type="number" min="1" max="120" value="3" />
+
+        <div class="role-modal-effect">
+          <div class="style-label">효과</div>
+          <div id="roleEffectText" class="role-effect-text">선택해주세요.</div>
+        </div>
+      </div>
+
+      <div class="role-modal-actions">
+        <button id="roleClearBtn" type="button" class="role-clear-btn">특수칸 해제</button>
+        <button id="roleApplyBtn" type="button" class="role-apply-btn">적용</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="camModal" class="role-modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="role-modal-backdrop" data-close-cam="1"></div>
+    <div class="role-modal-content">
+      <div class="role-modal-header">
+        <div class="role-modal-title">캠 패널 설정</div>
+        <button id="camModalCloseBtn" type="button" class="role-modal-close" aria-label="닫기">×</button>
+      </div>
+      <div class="role-modal-body">
+        <div class="cam-panel-form">
+          <label class="style-label" for="camPanelTitleInput">패널 제목</label>
+          <input id="camPanelTitleInput" type="text" value="캠 패널" />
+
+          <label class="style-label" for="camPanelHelpInput">패널 설명</label>
+          <input id="camPanelHelpInput" type="text" value="버튜버/스트리머 캠 화면 배치용 영역" />
+
+          <label class="style-label" for="camPanelLabelInput">CAM 텍스트</label>
+          <input id="camPanelLabelInput" type="text" value="CAM" />
+
+          <label class="style-label" for="camSidebarBgColorInput">사이드바 배경색</label>
+          <input id="camSidebarBgColorInput" type="color" value="#111827" />
+          <label class="style-label" for="camSidebarImageInput">사이드바 배경 이미지</label>
+          <input id="camSidebarImageInput" type="file" accept="image/*" />
+          <button id="clearCamSidebarImageBtn" type="button">사이드바 이미지 제거</button>
+
+          <label class="style-label" for="camSlotBgColorInput">CAM 영역 배경색</label>
+          <input id="camSlotBgColorInput" type="color" value="#111827" />
+          <label class="style-label" for="camSlotImageInput">CAM 영역 배경 이미지</label>
+          <input id="camSlotImageInput" type="file" accept="image/*" />
+          <button id="clearCamSlotImageBtn" type="button">CAM 이미지 제거</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tokenModal" class="role-modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="role-modal-backdrop" data-close-token="1"></div>
+    <div class="role-modal-content">
+      <div class="role-modal-header">
+        <div class="role-modal-title">말 설정</div>
+        <button id="tokenModalCloseBtn" type="button" class="role-modal-close" aria-label="닫기">×</button>
+      </div>
+      <div class="role-modal-body">
+        <label class="style-label" for="tokenColorInput">말 색</label>
+        <input id="tokenColorInput" type="color" value="#2563eb" />
+
+        <label class="style-label" for="tokenSizeInput">말 크기(px)</label>
+        <input id="tokenSizeInput" type="number" min="8" max="48" value="14" />
+
+        <label class="style-label" for="tokenImageInput">말 이미지</label>
+        <input id="tokenImageInput" type="file" accept="image/*" />
+        <button id="clearTokenImageBtn" type="button">이미지 제거</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="planeMoveModal" class="role-modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="role-modal-backdrop" data-close-plane="1"></div>
+    <div class="role-modal-content">
+      <div class="role-modal-header">
+        <div class="role-modal-title">비행기 이동</div>
+        <button id="planeMoveModalCloseBtn" type="button" class="role-modal-close" aria-label="닫기">×</button>
+      </div>
+      <div class="role-modal-body">
+        <label class="style-label" for="planeDestinationSelect">이동할 칸 선택</label>
+        <select id="planeDestinationSelect"></select>
+      </div>
+      <div class="role-modal-actions">
+        <button id="planeMoveApplyBtn" type="button" class="role-apply-btn">이동 적용</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="pageSettingsModal" class="role-modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="role-modal-backdrop" data-close-page="1"></div>
+    <div class="role-modal-content">
+      <div class="role-modal-header">
+        <div class="role-modal-title">페이지 설정</div>
+        <button id="pageSettingsModalCloseBtn" type="button" class="role-modal-close" aria-label="닫기">×</button>
+      </div>
+      <div class="role-modal-body">
+        <label class="style-label" for="pageBgColorInput">페이지 배경색</label>
+        <input id="pageBgColorInput" type="color" value="#f3f4f6" />
+        <label class="style-label" for="pageBgImageInput">페이지 배경 이미지</label>
+        <input id="pageBgImageInput" type="file" accept="image/*" />
+        <button id="clearPageBgImageBtn" type="button">페이지 배경 이미지 제거</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const numberInput = document.getElementById("numberInput");
+    const checkBtn = document.getElementById("checkBtn");
+    const toggleSidebarBtn = document.getElementById("toggleSidebarBtn");
+    const openSidebarBtn = document.getElementById("openSidebarBtn");
+    const openRightSidebarBtn = document.getElementById("openRightSidebarBtn");
+    const openCamSettingsBtn = document.getElementById("openCamSettingsBtn");
+    const openPageSettingsBtn = document.getElementById("openPageSettingsBtn");
+    const toggleRightSidebarBtn = document.getElementById("toggleRightSidebarBtn");
+    const resetGameBtn = document.getElementById("resetGameBtn");
+    const resetAllSettingsBtn = document.getElementById("resetAllSettingsBtn");
+    const decreasePlayerBtn = document.getElementById("decreasePlayerBtn");
+    const increasePlayerBtn = document.getElementById("increasePlayerBtn");
+    const playerCountInput = document.getElementById("playerCountInput");
+    const playerNameList = document.getElementById("playerNameList");
+    const numberList = document.getElementById("numberList");
+    const boxContainer = document.getElementById("boxContainer");
+    const fontSizeInput = document.getElementById("fontSizeInput");
+    const fontColorInput = document.getElementById("fontColorInput");
+    const fontFamilyInput = document.getElementById("fontFamilyInput");
+    const boxShapeInput = document.getElementById("boxShapeInput");
+    const boxRadiusInput = document.getElementById("boxRadiusInput");
+    const boxFillColorInput = document.getElementById("boxFillColorInput");
+    const boxBorderWidthInput = document.getElementById("boxBorderWidthInput");
+    const boxBorderColorInput = document.getElementById("boxBorderColorInput");
+    const boxImageInput = document.getElementById("boxImageInput");
+    const clearBoxImageBtn = document.getElementById("clearBoxImageBtn");
+    const backgroundColorInput = document.getElementById("backgroundColorInput");
+    const backgroundImageInput = document.getElementById("backgroundImageInput");
+    const clearBackgroundImageBtn = document.getElementById("clearBackgroundImageBtn");
+    const centerTextInput = document.getElementById("centerTextInput");
+    const centerTextOverlay = document.getElementById("centerTextOverlay");
+    const centerDiceOverlay = document.getElementById("centerDiceOverlay");
+    const centerDiceResult = document.getElementById("centerDiceResult");
+    const centerTextDisplay = document.getElementById("centerTextDisplay");
+    const camPanelTitleInput = document.getElementById("camPanelTitleInput");
+    const camPanelHelpInput = document.getElementById("camPanelHelpInput");
+    const camPanelLabelInput = document.getElementById("camPanelLabelInput");
+    const camSidebarBgColorInput = document.getElementById("camSidebarBgColorInput");
+    const camSidebarImageInput = document.getElementById("camSidebarImageInput");
+    const clearCamSidebarImageBtn = document.getElementById("clearCamSidebarImageBtn");
+    const camSlotBgColorInput = document.getElementById("camSlotBgColorInput");
+    const camSlotImageInput = document.getElementById("camSlotImageInput");
+    const clearCamSlotImageBtn = document.getElementById("clearCamSlotImageBtn");
+    const camPanelTitle = document.getElementById("camPanelTitle");
+    const camPanelHelp = document.getElementById("camPanelHelp");
+    const cameraSlot = document.getElementById("cameraSlot");
+    const cameraSlotLabel = document.getElementById("cameraSlotLabel");
+    const content = document.querySelector(".content");
+    const dice1Enabled = document.getElementById("dice1Enabled");
+    const dice2Enabled = document.getElementById("dice2Enabled");
+    const dice3Enabled = document.getElementById("dice3Enabled");
+    const dice1MinInput = document.getElementById("dice1MinInput");
+    const dice1MaxInput = document.getElementById("dice1MaxInput");
+    const dice2MinInput = document.getElementById("dice2MinInput");
+    const dice2MaxInput = document.getElementById("dice2MaxInput");
+    const dice3MinInput = document.getElementById("dice3MinInput");
+    const dice3MaxInput = document.getElementById("dice3MaxInput");
+    const rollDiceBtn = document.getElementById("rollDiceBtn");
+    const diceResult = document.getElementById("diceResult");
+    const diceTextSizeInput = document.getElementById("diceTextSizeInput");
+    const diceTextColorInput = document.getElementById("diceTextColorInput");
+    const diceTextFamilyInput = document.getElementById("diceTextFamilyInput");
+
+    const roleModal = document.getElementById("roleModal");
+    const roleSelect = document.getElementById("roleSelect");
+    const roleNInput = document.getElementById("roleNInput");
+    const roleEffectText = document.getElementById("roleEffectText");
+    const roleApplyBtn = document.getElementById("roleApplyBtn");
+    const roleClearBtn = document.getElementById("roleClearBtn");
+    const roleModalCloseBtn = document.getElementById("roleModalCloseBtn");
+    const camModal = document.getElementById("camModal");
+    const camModalCloseBtn = document.getElementById("camModalCloseBtn");
+    const tokenModal = document.getElementById("tokenModal");
+    const tokenModalCloseBtn = document.getElementById("tokenModalCloseBtn");
+    const tokenColorInput = document.getElementById("tokenColorInput");
+    const tokenSizeInput = document.getElementById("tokenSizeInput");
+    const tokenImageInput = document.getElementById("tokenImageInput");
+    const clearTokenImageBtn = document.getElementById("clearTokenImageBtn");
+    const planeMoveModal = document.getElementById("planeMoveModal");
+    const planeMoveModalCloseBtn = document.getElementById("planeMoveModalCloseBtn");
+    const planeDestinationSelect = document.getElementById("planeDestinationSelect");
+    const planeMoveApplyBtn = document.getElementById("planeMoveApplyBtn");
+    const pageSettingsModal = document.getElementById("pageSettingsModal");
+    const pageSettingsModalCloseBtn = document.getElementById("pageSettingsModalCloseBtn");
+    const pageBgColorInput = document.getElementById("pageBgColorInput");
+    const pageBgImageInput = document.getElementById("pageBgImageInput");
+    const clearPageBgImageBtn = document.getElementById("clearPageBgImageBtn");
+
+    let lastRenderedTotal = null;
+    let listLabels = [];
+    let itemStyles = [];
+    let roleTexts = [];
+    let roleNValues = [];
+    let startBoxIndex = null;
+    let boxImageUrl = "";
+    let backgroundImageUrl = "";
+    let pageBackgroundImageUrl = "";
+    let camSidebarImageUrl = "";
+    let camSlotImageUrl = "";
+    let playerNames = ["플레이어 1"];
+    let playerTokenStyles = [{ color: "#2563eb", size: 14, imageUrl: "" }];
+    let playerPositions = [0];
+    let currentPlayerIndex = 0;
+    let directionSign = 1; // 1: 시계방향, -1: 반시계방향
+    let playerJailTurns = [0];
+    let tokenModalPlayerIndex = null;
+    let pendingPlaneDecision = null;
+    let isRestoringState = false;
+    let persistTimer = null;
+
+    const STORAGE_KEY = "rollingDiceGameStateV1";
+    const BACKGROUND_IMAGE_STORAGE_KEY = "rollingDiceBackgroundImageV1";
+    const PLAYER_TOKEN_IMAGES_STORAGE_KEY = "rollingDicePlayerTokenImagesV1";
+    const CAM_PANEL_IMAGES_STORAGE_KEY = "rollingDiceCamPanelImagesV1";
+    const PAGE_BACKGROUND_IMAGE_STORAGE_KEY = "rollingDicePageBackgroundImageV1";
+
+    const ROLE_DEFS = [
+      {
+        id: "start",
+        name: "시작",
+        effect: "모노폴리 시작 칸으로 취급됩니다. (게임 규칙 연결 예정)"
+      },
+      {
+        id: "forwardN",
+        name: "앞으로 n칸",
+        effect: "앞으로 n칸 이동합니다. (n 값은 추후 구현)"
+      },
+      {
+        id: "backwardN",
+        name: "뒤로 n칸",
+        effect: "뒤로 n칸 이동합니다. (n 값은 추후 구현)"
+      },
+      {
+        id: "reverseDirection",
+        name: "진행 방향 반전",
+        effect: "현재 진행 방향을 반대로 바꿉니다. (게임 규칙 연결 예정)"
+      },
+      {
+        id: "jail",
+        name: "감옥",
+        effect: "감옥 상태가 됩니다. (감옥 규칙 연결 예정)"
+      },
+      {
+        id: "goToJail",
+        name: "감옥 가기",
+        effect: "즉시 감옥 칸으로 이동합니다. (게임 규칙 연결 예정)"
+      },
+      {
+        id: "plane",
+        name: "비행기",
+        effect: "비행기 칸입니다. (목적지/연결 규칙 추후 구현)"
+      },
+      {
+        id: "goToPlane",
+        name: "비행기 가기",
+        effect: "비행기 목적지 칸으로 이동합니다. (게임 규칙 연결 예정)"
+      }
+    ];
+
+    function fileToDataUrl(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result || ""));
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function resizeImageDataUrl(dataUrl, maxSide = 1600) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => {
+          const width = img.width || 0;
+          const height = img.height || 0;
+          if (width <= maxSide && height <= maxSide) {
+            resolve(dataUrl);
+            return;
+          }
+
+          const ratio = Math.min(maxSide / width, maxSide / height);
+          const targetW = Math.max(1, Math.round(width * ratio));
+          const targetH = Math.max(1, Math.round(height * ratio));
+          const canvas = document.createElement("canvas");
+          canvas.width = targetW;
+          canvas.height = targetH;
+          const ctx = canvas.getContext("2d");
+          if (!ctx) {
+            resolve(dataUrl);
+            return;
+          }
+
+          ctx.drawImage(img, 0, 0, targetW, targetH);
+          const resized = canvas.toDataURL("image/jpeg", 0.82);
+          resolve(resized || dataUrl);
+        };
+        img.onerror = () => resolve(dataUrl);
+        img.src = dataUrl;
+      });
+    }
+
+    function persistBackgroundImageNow() {
+      try {
+        localStorage.setItem(BACKGROUND_IMAGE_STORAGE_KEY, backgroundImageUrl || "");
+      } catch (error) {
+        console.warn("배경 이미지 저장 실패", error);
+      }
+    }
+
+    function persistPlayerTokenImagesNow() {
+      try {
+        const images = playerTokenStyles.map((style) => String(style?.imageUrl || ""));
+        localStorage.setItem(PLAYER_TOKEN_IMAGES_STORAGE_KEY, JSON.stringify(images));
+      } catch (error) {
+        console.warn("말 이미지 저장 실패", error);
+      }
+    }
+
+    function persistCamPanelImagesNow() {
+      try {
+        const payload = {
+          sidebarImageUrl: camSidebarImageUrl || "",
+          slotImageUrl: camSlotImageUrl || ""
+        };
+        localStorage.setItem(CAM_PANEL_IMAGES_STORAGE_KEY, JSON.stringify(payload));
+      } catch (error) {
+        console.warn("캠 패널 이미지 저장 실패", error);
+      }
+    }
+
+    function persistPageBackgroundImageNow() {
+      try {
+        localStorage.setItem(PAGE_BACKGROUND_IMAGE_STORAGE_KEY, pageBackgroundImageUrl || "");
+      } catch (error) {
+        console.warn("페이지 배경 이미지 저장 실패", error);
+      }
+    }
+
+    function buildPersistedState() {
+      return {
+        numberInput: numberInput.value,
+        playerCount: playerCountInput.value,
+        playerNames,
+        playerTokenStyles,
+        playerPositions,
+        currentPlayerIndex,
+        directionSign,
+        playerJailTurns,
+        lastRenderedTotal,
+        listLabels,
+        itemStyles,
+        roleTexts,
+        roleNValues,
+        startBoxIndex,
+        dice: {
+          enabled: [dice1Enabled.checked, dice2Enabled.checked, dice3Enabled.checked],
+          min: [dice1MinInput.value, dice2MinInput.value, dice3MinInput.value],
+          max: [dice1MaxInput.value, dice2MaxInput.value, dice3MaxInput.value],
+          result: diceResult.textContent || "",
+          centerResult: centerDiceResult.textContent || ""
+        },
+        diceTextStyle: {
+          size: diceTextSizeInput.value,
+          color: diceTextColorInput.value,
+          family: diceTextFamilyInput.value
+        },
+        textStyle: {
+          size: fontSizeInput.value,
+          color: fontColorInput.value,
+          family: fontFamilyInput.value
+        },
+        boxStyle: {
+          shape: boxShapeInput.value,
+          radius: boxRadiusInput.value,
+          fill: boxFillColorInput.value,
+          borderWidth: boxBorderWidthInput.value,
+          borderColor: boxBorderColorInput.value,
+          imageUrl: boxImageUrl
+        },
+        background: {
+          color: backgroundColorInput.value,
+          imageUrl: backgroundImageUrl
+        },
+        centerText: centerTextInput.value,
+        camPanel: {
+          title: camPanelTitleInput.value,
+          help: camPanelHelpInput.value,
+          label: camPanelLabelInput.value,
+          sidebarBgColor: camSidebarBgColorInput.value,
+          sidebarImageUrl: camSidebarImageUrl,
+          slotBgColor: camSlotBgColorInput.value,
+          slotImageUrl: camSlotImageUrl
+        },
+        pageBackground: {
+          color: pageBgColorInput.value,
+          imageUrl: pageBackgroundImageUrl
+        }
+      };
+    }
+
+    function persistStateNow() {
+      if (isRestoringState) return;
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(buildPersistedState()));
+      } catch (error) {
+        // 전체 상태 저장이 실패해도 배경 이미지는 별도 키에 저장 시도
+        persistBackgroundImageNow();
+        persistPlayerTokenImagesNow();
+        persistCamPanelImagesNow();
+        persistPageBackgroundImageNow();
+        console.warn("전체 상태 저장 실패", error);
+      }
+    }
+
+    function schedulePersistState() {
+      if (isRestoringState) return;
+      if (persistTimer) {
+        clearTimeout(persistTimer);
+      }
+      persistTimer = setTimeout(() => {
+        persistStateNow();
+      }, 120);
+    }
+
+    function restoreStateFromStorage() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+
+      let saved = null;
+      try {
+        saved = JSON.parse(raw);
+      } catch {
+        return;
+      }
+      if (!saved || typeof saved !== "object") return;
+
+      isRestoringState = true;
+      try {
+        if (saved.numberInput) numberInput.value = String(saved.numberInput);
+        if (saved.playerCount) playerCountInput.value = String(saved.playerCount);
+        if (Array.isArray(saved.playerNames)) playerNames = saved.playerNames.slice();
+        if (Array.isArray(saved.playerTokenStyles)) playerTokenStyles = saved.playerTokenStyles.slice();
+        const standaloneTokenImagesRaw = localStorage.getItem(PLAYER_TOKEN_IMAGES_STORAGE_KEY);
+        if (standaloneTokenImagesRaw) {
+          try {
+            const standaloneTokenImages = JSON.parse(standaloneTokenImagesRaw);
+            if (Array.isArray(standaloneTokenImages)) {
+              for (let i = 0; i < standaloneTokenImages.length; i += 1) {
+                const imageUrl = String(standaloneTokenImages[i] || "");
+                if (!playerTokenStyles[i]) {
+                  playerTokenStyles[i] = { color: "#2563eb", size: 14, imageUrl: "" };
+                }
+                if (imageUrl) {
+                  playerTokenStyles[i].imageUrl = imageUrl;
+                }
+              }
+            }
+          } catch {
+            // ignore parse error
+          }
+        }
+        if (Array.isArray(saved.playerPositions)) playerPositions = saved.playerPositions.slice();
+        if (typeof saved.currentPlayerIndex === "number") currentPlayerIndex = Math.max(0, saved.currentPlayerIndex);
+        if (typeof saved.directionSign === "number") directionSign = saved.directionSign === -1 ? -1 : 1;
+        if (Array.isArray(saved.playerJailTurns)) playerJailTurns = saved.playerJailTurns.slice();
+
+        if (Array.isArray(saved.listLabels)) listLabels = saved.listLabels.slice();
+        if (Array.isArray(saved.itemStyles)) itemStyles = saved.itemStyles.slice();
+        if (Array.isArray(saved.roleTexts)) roleTexts = saved.roleTexts.slice();
+        if (Array.isArray(saved.roleNValues)) roleNValues = saved.roleNValues.slice();
+        if (typeof saved.startBoxIndex === "number" || saved.startBoxIndex === null) startBoxIndex = saved.startBoxIndex;
+
+        if (saved.textStyle) {
+          fontSizeInput.value = String(saved.textStyle.size ?? fontSizeInput.value);
+          fontColorInput.value = String(saved.textStyle.color ?? fontColorInput.value);
+          fontFamilyInput.value = String(saved.textStyle.family ?? fontFamilyInput.value);
+        }
+        if (saved.boxStyle) {
+          boxShapeInput.value = String(saved.boxStyle.shape ?? boxShapeInput.value);
+          boxRadiusInput.value = String(saved.boxStyle.radius ?? boxRadiusInput.value);
+          boxFillColorInput.value = String(saved.boxStyle.fill ?? boxFillColorInput.value);
+          boxBorderWidthInput.value = String(saved.boxStyle.borderWidth ?? boxBorderWidthInput.value);
+          boxBorderColorInput.value = String(saved.boxStyle.borderColor ?? boxBorderColorInput.value);
+          boxImageUrl = String(saved.boxStyle.imageUrl ?? "");
+        }
+        if (saved.background) {
+          backgroundColorInput.value = String(saved.background.color ?? backgroundColorInput.value);
+          backgroundImageUrl = String(saved.background.imageUrl ?? "");
+        }
+        if (saved.pageBackground) {
+          pageBgColorInput.value = String(saved.pageBackground.color ?? pageBgColorInput.value);
+          pageBackgroundImageUrl = String(saved.pageBackground.imageUrl ?? "");
+        }
+        const standaloneBackground = localStorage.getItem(BACKGROUND_IMAGE_STORAGE_KEY);
+        if (standaloneBackground !== null) {
+          backgroundImageUrl = standaloneBackground;
+        }
+        const standalonePageBackground = localStorage.getItem(PAGE_BACKGROUND_IMAGE_STORAGE_KEY);
+        if (standalonePageBackground !== null) {
+          pageBackgroundImageUrl = standalonePageBackground;
+        }
+        if (typeof saved.centerText === "string") {
+          centerTextInput.value = saved.centerText;
+        }
+        if (saved.camPanel) {
+          camPanelTitleInput.value = String(saved.camPanel.title ?? camPanelTitleInput.value);
+          camPanelHelpInput.value = String(saved.camPanel.help ?? camPanelHelpInput.value);
+          camPanelLabelInput.value = String(saved.camPanel.label ?? camPanelLabelInput.value);
+          camSidebarBgColorInput.value = String(saved.camPanel.sidebarBgColor ?? saved.camPanel.bgColor ?? camSidebarBgColorInput.value);
+          camSlotBgColorInput.value = String(saved.camPanel.slotBgColor ?? saved.camPanel.bgColor ?? camSlotBgColorInput.value);
+          camSidebarImageUrl = String(saved.camPanel.sidebarImageUrl ?? "");
+          camSlotImageUrl = String(saved.camPanel.slotImageUrl ?? saved.camPanel.imageUrl ?? "");
+        }
+        const standaloneCamImagesRaw = localStorage.getItem(CAM_PANEL_IMAGES_STORAGE_KEY);
+        if (standaloneCamImagesRaw) {
+          try {
+            const standaloneCamImages = JSON.parse(standaloneCamImagesRaw);
+            camSidebarImageUrl = String(standaloneCamImages?.sidebarImageUrl || camSidebarImageUrl || "");
+            camSlotImageUrl = String(standaloneCamImages?.slotImageUrl || camSlotImageUrl || "");
+          } catch {
+            // ignore parse error
+          }
+        }
+        if (saved.dice) {
+          const enabled = saved.dice.enabled || [];
+          const min = saved.dice.min || [];
+          const max = saved.dice.max || [];
+          dice1Enabled.checked = Boolean(enabled[0]);
+          dice2Enabled.checked = Boolean(enabled[1]);
+          dice3Enabled.checked = Boolean(enabled[2]);
+          if (min[0] !== undefined) dice1MinInput.value = String(min[0]);
+          if (min[1] !== undefined) dice2MinInput.value = String(min[1]);
+          if (min[2] !== undefined) dice3MinInput.value = String(min[2]);
+          if (max[0] !== undefined) dice1MaxInput.value = String(max[0]);
+          if (max[1] !== undefined) dice2MaxInput.value = String(max[1]);
+          if (max[2] !== undefined) dice3MaxInput.value = String(max[2]);
+          diceResult.textContent = String(saved.dice.result || "");
+          centerDiceResult.textContent = String(saved.dice.centerResult || "");
+        }
+        if (saved.diceTextStyle) {
+          diceTextSizeInput.value = String(saved.diceTextStyle.size ?? diceTextSizeInput.value);
+          diceTextColorInput.value = String(saved.diceTextStyle.color ?? diceTextColorInput.value);
+          diceTextFamilyInput.value = String(saved.diceTextStyle.family ?? diceTextFamilyInput.value);
+        }
+
+        // 인원/리스트/보드 재구성
+        renderPlayerNameList();
+        const parsed = Number(numberInput.value);
+        if (parsed >= 6 && parsed % 6 === 0) {
+          lastRenderedTotal = parsed;
+        }
+        if (lastRenderedTotal !== null) {
+          if (!Array.isArray(listLabels) || listLabels.length !== lastRenderedTotal) {
+            listLabels = Array.from({ length: lastRenderedTotal }, (_, index) => getListLabel(index + 1));
+          }
+          if (!Array.isArray(itemStyles) || itemStyles.length !== lastRenderedTotal) {
+            itemStyles = Array.from({ length: lastRenderedTotal }, () => ({}));
+          }
+          if (!Array.isArray(roleTexts) || roleTexts.length !== lastRenderedTotal) {
+            roleTexts = Array.from({ length: lastRenderedTotal }, () => "");
+          }
+          if (!Array.isArray(roleNValues) || roleNValues.length !== lastRenderedTotal) {
+            roleNValues = Array.from({ length: lastRenderedTotal }, () => 3);
+          }
+          renderList(lastRenderedTotal);
+          renderBoard(lastRenderedTotal);
+        }
+
+        applyTextStyle();
+        applyBackgroundStyle();
+        applyCenterText();
+        applyCamPanelStyle();
+        applyPageBackgroundStyle();
+        syncDiceEnabledUI();
+        applyDiceResultStyle();
+      } finally {
+        isRestoringState = false;
+      }
+    }
+
+    function normalizeRoleId(roleValue) {
+      if (!roleValue) return "";
+      if (roleValue === "시작") return "start";
+      return roleValue;
+    }
+
+    function getRoleName(roleId) {
+      const normalized = normalizeRoleId(roleId);
+      const found = ROLE_DEFS.find((r) => r.id === normalized);
+      return found ? found.name : normalized;
+    }
+
+    function getRoleEffect(roleId) {
+      const normalized = normalizeRoleId(roleId);
+      const found = ROLE_DEFS.find((r) => r.id === normalized);
+      return found ? found.effect : "";
+    }
+
+    function getSpecialTileLabel(index) {
+      const roleId = roleTexts[index];
+      if (!roleId) return "";
+      const normalized = normalizeRoleId(roleId);
+      const n = roleNValues[index] ?? 3;
+
+      if (normalized === "forwardN") return `앞으로 ${n}칸`;
+      if (normalized === "backwardN") return `뒤로 ${n}칸`;
+
+      const found = ROLE_DEFS.find((r) => r.id === normalized);
+      return found ? found.name : normalized;
+    }
+
+    function getSpecialTileStatusText(index) {
+      if (startBoxIndex === index) {
+        return "현재 특수칸: 시작";
+      }
+
+      const label = getSpecialTileLabel(index);
+      return label ? `현재 특수칸: ${label}` : "현재 특수칸: 없음";
+    }
+
+    function hasSpecialTile(index) {
+      return startBoxIndex === index || Boolean(normalizeRoleId(roleTexts[index]));
+    }
+
+    function getDisplayTileLabel(index) {
+      if (startBoxIndex === index) {
+        return "출발점";
+      }
+      const specialLabel = getSpecialTileLabel(index);
+      if (specialLabel) {
+        return specialLabel;
+      }
+      return listLabels[index] ?? getListLabel(index + 1);
+    }
+
+    function syncRoleNInputUI(loadStoredValue = false) {
+      const roleId = roleSelect.value;
+      const needN = roleId === "forwardN" || roleId === "backwardN";
+      roleNInput.disabled = !needN;
+      if (loadStoredValue && needN && roleModalIndex !== null) {
+        roleNInput.value = String(roleNValues[roleModalIndex] ?? 3);
+      }
+    }
+
+    let roleModalIndex = null;
+
+    function updateRoleEffectText() {
+      syncRoleNInputUI();
+
+      const roleId = roleSelect.value;
+      const n = Math.min(120, Math.max(1, Number(roleNInput.value) || 1));
+
+      if (!roleId) {
+        roleEffectText.textContent = "해제 상태입니다.";
+        return;
+      }
+
+      if (roleId === "forwardN") {
+        roleEffectText.textContent = `앞으로 ${n}칸 이동합니다.`;
+        return;
+      }
+
+      if (roleId === "backwardN") {
+        roleEffectText.textContent = `뒤로 ${n}칸 이동합니다.`;
+        return;
+      }
+
+      roleEffectText.textContent = getRoleEffect(roleId);
+    }
+
+    function closeRoleModal() {
+      roleModalIndex = null;
+      roleModal.setAttribute("aria-hidden", "true");
+    }
+
+    function openRoleModal(index) {
+      roleModalIndex = index;
+
+      // roleSelect 옵션 구성
+      roleSelect.innerHTML = "";
+
+      const noneOption = document.createElement("option");
+      noneOption.value = "";
+      noneOption.textContent = "해제(없음)";
+      roleSelect.appendChild(noneOption);
+
+      const startOption = document.createElement("option");
+      startOption.value = "start";
+      startOption.textContent = "시작";
+      if (startBoxIndex !== null && startBoxIndex !== index) {
+        startOption.disabled = true;
+      }
+      roleSelect.appendChild(startOption);
+
+      ROLE_DEFS.filter((r) => r.id !== "start").forEach((r) => {
+        const opt = document.createElement("option");
+        opt.value = r.id;
+        opt.textContent = r.name;
+        roleSelect.appendChild(opt);
+      });
+
+      // 현재 선택 반영
+      const currentId = startBoxIndex === index ? "start" : normalizeRoleId(roleTexts[index]);
+      roleSelect.value = currentId || "";
+
+      syncRoleNInputUI(true);
+      updateRoleEffectText();
+
+      roleModal.setAttribute("aria-hidden", "false");
+    }
+
+    function applyRoleFromModal() {
+      if (roleModalIndex === null) return;
+
+      const selected = roleSelect.value; // '' | 'start' | other
+
+      if (selected === "") {
+        // 해제
+        if (startBoxIndex === roleModalIndex) {
+          startBoxIndex = null;
+        }
+        roleTexts[roleModalIndex] = "";
+        roleNValues[roleModalIndex] = 3;
+      } else if (selected === "start") {
+        // 시작은 전체에 1개만 존재하며, 다른 칸의 시작은 건드리지 못합니다.
+        if (startBoxIndex !== null && startBoxIndex !== roleModalIndex) {
+          return;
+        }
+        startBoxIndex = roleModalIndex;
+        roleTexts[roleModalIndex] = "start";
+        roleNValues[roleModalIndex] = 3;
+      } else {
+        // 일반 특수칸 이벤트
+        if (startBoxIndex === roleModalIndex) {
+          startBoxIndex = null;
+        }
+        roleTexts[roleModalIndex] = selected;
+
+        if (selected === "forwardN" || selected === "backwardN") {
+          const n = Math.min(120, Math.max(1, Number(roleNInput.value) || 1));
+          roleNValues[roleModalIndex] = n;
+        } else {
+          roleNValues[roleModalIndex] = 3;
+        }
+      }
+
+      closeRoleModal();
+      if (lastRenderedTotal !== null) {
+        renderList(lastRenderedTotal);
+        renderBoard(lastRenderedTotal);
+      }
+      schedulePersistState();
+    }
+
+    function getListLabel(index) {
+      return String(index);
+    }
+
+    function initNumberOptions() {
+      numberInput.innerHTML = "";
+      for (let value = 6; value <= 120; value += 6) {
+        const option = document.createElement("option");
+        option.value = String(value);
+        option.textContent = String(value);
+        numberInput.appendChild(option);
+      }
+      numberInput.value = "24";
+    }
+
+    function syncDiceEnabledUI() {
+      enforceDiceRangeValues();
+      dice1MinInput.disabled = !dice1Enabled.checked;
+      dice1MaxInput.disabled = !dice1Enabled.checked;
+      dice2MinInput.disabled = !dice2Enabled.checked;
+      dice2MaxInput.disabled = !dice2Enabled.checked;
+      dice3MinInput.disabled = !dice3Enabled.checked;
+      dice3MaxInput.disabled = !dice3Enabled.checked;
+
+      syncCenterDiceIcons();
+    }
+
+    function applyDiceResultStyle() {
+      const size = Math.min(32, Math.max(10, Number(diceTextSizeInput.value) || 14));
+      diceTextSizeInput.value = String(size);
+      const color = diceTextColorInput.value || "#e5e7eb";
+      const family = diceTextFamilyInput.value || "Arial, sans-serif";
+
+      diceResult.style.fontSize = `${size}px`;
+      diceResult.style.color = color;
+      diceResult.style.fontFamily = family;
+
+      centerDiceResult.style.fontSize = `${size}px`;
+      centerDiceResult.style.color = color;
+      centerDiceResult.style.fontFamily = family;
+    }
+
+    function enforceDiceRangeValues() {
+      const pairs = [
+        [dice1MinInput, dice1MaxInput],
+        [dice2MinInput, dice2MaxInput],
+        [dice3MinInput, dice3MaxInput]
+      ];
+
+      pairs.forEach(([minInput, maxInput]) => {
+        const min = Math.min(100, Math.max(0, Number(minInput.value) || 0));
+        const max = Math.min(100, Math.max(0, Number(maxInput.value) || 0));
+        minInput.value = String(min);
+        maxInput.value = String(max < min ? min : max);
+      });
+    }
+
+    function normalizeCellIndex(index, total) {
+      if (total <= 0) return 0;
+      const mod = index % total;
+      return mod < 0 ? mod + total : mod;
+    }
+
+    function moveBySteps(index, steps, total, sign) {
+      return normalizeCellIndex(index + steps * sign, total);
+    }
+
+    function findFirstRoleTile(roleId) {
+      for (let i = 0; i < roleTexts.length; i += 1) {
+        if (normalizeRoleId(roleTexts[i]) === roleId) return i;
+      }
+      return -1;
+    }
+
+    function applySpecialTileEffects(playerIndex, landedIndex, total) {
+      let current = landedIndex;
+      const logs = [];
+      let requiresPlaneChoice = false;
+
+      for (let guard = 0; guard < 8; guard += 1) {
+        const roleId = normalizeRoleId(roleTexts[current]);
+        if (!roleId || roleId === "start") break;
+
+        if (roleId === "forwardN") {
+          const n = Math.max(1, Number(roleNValues[current]) || 1);
+          current = moveBySteps(current, n, total, directionSign);
+          logs.push(`앞으로 ${n}칸 -> ${current + 1}`);
+          continue;
+        }
+
+        if (roleId === "backwardN") {
+          const n = Math.max(1, Number(roleNValues[current]) || 1);
+          current = moveBySteps(current, n, total, -directionSign);
+          logs.push(`뒤로 ${n}칸 -> ${current + 1}`);
+          continue;
+        }
+
+        if (roleId === "reverseDirection") {
+          directionSign = directionSign === 1 ? -1 : 1;
+          logs.push(`진행방향 반전 (${directionSign === 1 ? "시계" : "반시계"})`);
+          break;
+        }
+
+        if (roleId === "jail") {
+          playerJailTurns[playerIndex] = 1;
+          logs.push("감옥 1턴");
+          break;
+        }
+
+        if (roleId === "goToJail") {
+          const jailIndex = findFirstRoleTile("jail");
+          if (jailIndex >= 0) {
+            current = jailIndex;
+            playerJailTurns[playerIndex] = 1;
+            logs.push(`감옥 가기 -> ${current + 1}`);
+          }
+          break;
+        }
+
+        if (roleId === "goToPlane") {
+          const planeIndex = findFirstRoleTile("plane");
+          if (planeIndex >= 0) {
+            current = planeIndex;
+            logs.push(`비행기 가기 -> ${current + 1}`);
+            // 비행기 칸에 도착한 뒤 목적지 선택 이벤트까지 이어서 처리
+            continue;
+          }
+          break;
+        }
+
+        // plane 등 나머지 특수칸은 현재는 도착 효과 없음
+        if (roleId === "plane") {
+          requiresPlaneChoice = true;
+          logs.push("비행기 목적지 선택");
+        }
+        break;
+      }
+
+      return { finalIndex: current, logs, requiresPlaneChoice };
+    }
+
+    function completeTurnAfterMove(movingPlayer, before, after, text, specialLogs, extraLog = "") {
+      const playerCount = Math.max(1, Number(playerCountInput.value) || 1);
+      const movingPlayerName = playerNames[movingPlayer] || `플레이어 ${movingPlayer + 1}`;
+      currentPlayerIndex = (movingPlayer + 1) % playerCount;
+      const nextPlayerName = playerNames[currentPlayerIndex] || `플레이어 ${currentPlayerIndex + 1}`;
+      const movedText = `${movingPlayerName} 이동: ${before + 1} -> ${after + 1}`;
+      const directionText = `방향: ${directionSign === 1 ? "시계" : "반시계"}`;
+      const specialText = specialLogs.length > 0 ? ` | 특수칸: ${specialLogs.join(", ")}` : "";
+      const extraText = extraLog ? ` | ${extraLog}` : "";
+
+      diceResult.textContent = `${text} | ${movedText}${specialText}${extraText} | ${directionText} | 다음 차례: ${nextPlayerName}`;
+      centerDiceResult.textContent = `${text}\n${movedText}${specialText}${extraText}\n${directionText}\n다음 차례: ${nextPlayerName}`;
+      renderBoard(lastRenderedTotal);
+      schedulePersistState();
+    }
+
+    function openPlaneMoveModal(movingPlayer, before, landedAfterEffects, text, specialLogs) {
+      pendingPlaneDecision = {
+        movingPlayer,
+        before,
+        landedAfterEffects,
+        text,
+        specialLogs
+      };
+
+      planeDestinationSelect.innerHTML = "";
+      const total = Math.max(1, lastRenderedTotal || 1);
+      for (let i = 0; i < total; i += 1) {
+        const option = document.createElement("option");
+        const label = listLabels[i] || getListLabel(i + 1);
+        option.value = String(i);
+        option.textContent = `${i + 1}번 칸 (${label})`;
+        planeDestinationSelect.appendChild(option);
+      }
+      planeDestinationSelect.value = String(landedAfterEffects);
+      planeMoveModal.setAttribute("aria-hidden", "false");
+    }
+
+    function closePlaneMoveModal() {
+      planeMoveModal.setAttribute("aria-hidden", "true");
+    }
+
+    function applyPlaneMoveSelection() {
+      if (!pendingPlaneDecision) return;
+      const destination = normalizeCellIndex(Number(planeDestinationSelect.value) || 0, Math.max(1, lastRenderedTotal || 1));
+      const { movingPlayer, before, text, specialLogs } = pendingPlaneDecision;
+      const baseLogs = [...specialLogs, `비행기 이동 -> ${destination + 1}`];
+      const chainedSpecial = applySpecialTileEffects(movingPlayer, destination, Math.max(1, lastRenderedTotal || 1));
+      const totalLogs = [...baseLogs, ...chainedSpecial.logs];
+      const after = chainedSpecial.finalIndex;
+      playerPositions[movingPlayer] = after;
+      pendingPlaneDecision = null;
+      closePlaneMoveModal();
+      if (chainedSpecial.requiresPlaneChoice) {
+        renderBoard(lastRenderedTotal);
+        openPlaneMoveModal(movingPlayer, before, after, text, totalLogs);
+        return;
+      }
+      completeTurnAfterMove(movingPlayer, before, after, text, totalLogs);
+    }
+
+    function cancelPlaneMoveSelection() {
+      if (!pendingPlaneDecision) {
+        closePlaneMoveModal();
+        return;
+      }
+      const { movingPlayer, before, landedAfterEffects, text, specialLogs } = pendingPlaneDecision;
+      playerPositions[movingPlayer] = landedAfterEffects;
+      pendingPlaneDecision = null;
+      closePlaneMoveModal();
+      completeTurnAfterMove(movingPlayer, before, landedAfterEffects, text, specialLogs, "비행기 이동 취소");
+    }
+
+    function syncCenterDiceIcons() {
+      const enabledFlags = [dice1Enabled.checked, dice2Enabled.checked, dice3Enabled.checked];
+      const symbols = ["⚀", "⚁", "⚂"]; // 토글 순서대로 아이콘 추가
+
+      centerDiceOverlay.innerHTML = "";
+      for (let i = 0; i < 3; i += 1) {
+        if (!enabledFlags[i]) continue;
+        const icon = document.createElement("span");
+        icon.className = "dice-icon";
+        icon.textContent = symbols[i];
+        centerDiceOverlay.appendChild(icon);
+      }
+    }
+
+    function rollDice() {
+      if (pendingPlaneDecision) {
+        diceResult.textContent = "비행기 목적지를 먼저 선택해주세요.";
+        centerDiceResult.textContent = "비행기 목적지를 먼저 선택해주세요.";
+        return;
+      }
+
+      enforceDiceRangeValues();
+      const results = [];
+      let sum = 0;
+      const enabledFlags = [dice1Enabled.checked, dice2Enabled.checked, dice3Enabled.checked];
+      const minValues = [dice1MinInput, dice2MinInput, dice3MinInput];
+      const maxValues = [dice1MaxInput, dice2MaxInput, dice3MaxInput];
+
+      for (let i = 0; i < 3; i += 1) {
+        if (!enabledFlags[i]) continue;
+        const min = Math.min(100, Math.max(0, Number(minValues[i].value) || 0));
+        const max = Math.min(100, Math.max(0, Number(maxValues[i].value) || 0));
+        const low = Math.min(min, max);
+        const high = Math.max(min, max);
+        const value = low + Math.floor(Math.random() * (high - low + 1)); // min..max inclusive
+        results.push(value);
+        sum += value;
+      }
+
+      if (results.length === 0) {
+        diceResult.textContent = "켜진 주사위가 없습니다.";
+        centerDiceResult.textContent = "켜진 주사위가 없습니다.";
+        return;
+      }
+
+      const text = `주사위 결과: ${results.join(", ")} / 합: ${sum}`;
+      const playerCount = Math.max(1, Number(playerCountInput.value) || 1);
+      if (!lastRenderedTotal || lastRenderedTotal < 1) {
+        diceResult.textContent = text;
+        centerDiceResult.textContent = text;
+        return;
+      }
+
+      const movingPlayer = Math.min(currentPlayerIndex, playerCount - 1);
+      if ((playerJailTurns[movingPlayer] ?? 0) > 0) {
+        playerJailTurns[movingPlayer] -= 1;
+        currentPlayerIndex = (movingPlayer + 1) % playerCount;
+        const nextPlayerName = playerNames[currentPlayerIndex] || `플레이어 ${currentPlayerIndex + 1}`;
+        const skipText = `${playerNames[movingPlayer] || `플레이어 ${movingPlayer + 1}`} 감옥으로 이번 턴 쉬기`;
+        diceResult.textContent = `${text} | ${skipText} | 다음 차례: ${nextPlayerName}`;
+        centerDiceResult.textContent = `${text}\n${skipText}\n다음 차례: ${nextPlayerName}`;
+        schedulePersistState();
+        return;
+      }
+
+      const before = playerPositions[movingPlayer] ?? 0;
+      const landed = moveBySteps(before, sum, lastRenderedTotal, directionSign);
+      const special = applySpecialTileEffects(movingPlayer, landed, lastRenderedTotal);
+      const after = special.finalIndex;
+      playerPositions[movingPlayer] = after;
+      if (special.requiresPlaneChoice) {
+        renderBoard(lastRenderedTotal);
+        openPlaneMoveModal(movingPlayer, before, after, text, special.logs);
+        return;
+      }
+
+      completeTurnAfterMove(movingPlayer, before, after, text, special.logs);
+    }
+
+    function getGlobalStyle() {
+      return {
+        size: Math.min(24, Math.max(8, Number(fontSizeInput.value) || 10)),
+        color: fontColorInput.value || "#111827",
+        family: fontFamilyInput.value || "Arial, sans-serif"
+      };
+    }
+
+    function getEffectiveStyle(index) {
+      const globalStyle = getGlobalStyle();
+      const itemStyle = itemStyles[index] || {};
+      return {
+        size: itemStyle.size ?? globalStyle.size,
+        color: itemStyle.color ?? globalStyle.color,
+        family: itemStyle.family ?? globalStyle.family
+      };
+    }
+
+    function applyTextStyle() {
+      const globalStyle = getGlobalStyle();
+      document.documentElement.style.setProperty("--label-font-size", `${globalStyle.size}px`);
+      document.documentElement.style.setProperty("--label-color", globalStyle.color);
+      document.documentElement.style.setProperty("--label-font-family", globalStyle.family);
+
+      if (lastRenderedTotal !== null) {
+        renderList(lastRenderedTotal);
+        renderBoard(lastRenderedTotal);
+      }
+    }
+
+    function getGlobalBoxStyle() {
+      return {
+        shape: boxShapeInput.value || "square",
+        radius: Math.min(30, Math.max(0, Number(boxRadiusInput.value) || 0)),
+        fill: boxFillColorInput.value || "#f4f4f4",
+        borderWidth: Math.min(10, Math.max(0, Number(boxBorderWidthInput.value) || 2)),
+        borderColor: boxBorderColorInput.value || "#333333",
+        imageUrl: boxImageUrl
+      };
+    }
+
+    function getEffectiveBoxStyle(index, globalBoxStyle) {
+      const itemStyle = itemStyles[index] || {};
+      return {
+        ...globalBoxStyle,
+        imageUrl: itemStyle.boxImageUrl ?? globalBoxStyle.imageUrl
+      };
+    }
+
+    function applyBoxStyle() {
+      if (lastRenderedTotal !== null) {
+        renderBoard(lastRenderedTotal);
+      }
+    }
+
+    function applyBackgroundStyle() {
+      content.style.backgroundColor = backgroundColorInput.value || "#ffffff";
+      content.style.backgroundImage = backgroundImageUrl ? `url("${backgroundImageUrl}")` : "none";
+      content.style.backgroundSize = "cover";
+      content.style.backgroundPosition = "center";
+      content.style.backgroundRepeat = "no-repeat";
+    }
+
+    function applyPageBackgroundStyle() {
+      document.body.style.backgroundColor = pageBgColorInput.value || "#f3f4f6";
+      document.body.style.backgroundImage = pageBackgroundImageUrl ? `url("${pageBackgroundImageUrl}")` : "none";
+      document.body.style.backgroundSize = "cover";
+      document.body.style.backgroundPosition = "center";
+      document.body.style.backgroundRepeat = "no-repeat";
+      document.body.style.backgroundAttachment = "fixed";
+    }
+
+    function applyCenterText() {
+      centerTextDisplay.textContent = centerTextInput.value || "";
+    }
+
+    function applyCamPanelStyle() {
+      camPanelTitle.textContent = camPanelTitleInput.value;
+      camPanelHelp.textContent = camPanelHelpInput.value || "";
+      cameraSlotLabel.textContent = camPanelLabelInput.value || "";
+
+      const sidebarBgColor = camSidebarBgColorInput.value || "#111827";
+      const rightSidebar = document.querySelector(".right-sidebar");
+      if (rightSidebar) {
+        rightSidebar.style.backgroundColor = sidebarBgColor;
+        rightSidebar.style.backgroundImage = camSidebarImageUrl ? `url("${camSidebarImageUrl}")` : "none";
+        rightSidebar.style.backgroundSize = "cover";
+        rightSidebar.style.backgroundPosition = "center";
+        rightSidebar.style.backgroundRepeat = "no-repeat";
+      }
+
+      const slotBgColor = camSlotBgColorInput.value || "#111827";
+      cameraSlot.style.backgroundColor = slotBgColor;
+      cameraSlot.style.backgroundImage = camSlotImageUrl ? `url("${camSlotImageUrl}")` : "none";
+      cameraSlot.style.backgroundSize = "cover";
+      cameraSlot.style.backgroundPosition = "center";
+      cameraSlot.style.backgroundRepeat = "no-repeat";
+    }
+
+    function renderPlayerNameList() {
+      const count = Math.max(1, Number(playerCountInput.value) || 1);
+      if (playerNames.length < count) {
+        for (let i = playerNames.length; i < count; i += 1) {
+          playerNames.push(`플레이어 ${i + 1}`);
+        }
+      } else if (playerNames.length > count) {
+        playerNames = playerNames.slice(0, count);
+      }
+
+      if (playerTokenStyles.length < count) {
+        for (let i = playerTokenStyles.length; i < count; i += 1) {
+          playerTokenStyles.push({ color: "#2563eb", size: 14, imageUrl: "" });
+        }
+      } else if (playerTokenStyles.length > count) {
+        playerTokenStyles = playerTokenStyles.slice(0, count);
+      }
+
+      if (playerPositions.length < count) {
+        const startCell = startBoxIndex ?? 0;
+        for (let i = playerPositions.length; i < count; i += 1) {
+          playerPositions.push(startCell);
+        }
+      } else if (playerPositions.length > count) {
+        playerPositions = playerPositions.slice(0, count);
+      }
+      if (playerJailTurns.length < count) {
+        for (let i = playerJailTurns.length; i < count; i += 1) {
+          playerJailTurns.push(0);
+        }
+      } else if (playerJailTurns.length > count) {
+        playerJailTurns = playerJailTurns.slice(0, count);
+      }
+      currentPlayerIndex = Math.min(currentPlayerIndex, count - 1);
+
+      playerNameList.innerHTML = "";
+      playerNames.forEach((name, index) => {
+        const row = document.createElement("div");
+        row.className = "player-name-row";
+
+        const tokenButton = document.createElement("button");
+        tokenButton.type = "button";
+        tokenButton.className = "player-token-btn";
+        tokenButton.setAttribute("data-index", String(index));
+        tokenButton.setAttribute("aria-label", `${index + 1}번 말 설정`);
+        const tokenStyle = playerTokenStyles[index] || { color: "#2563eb", size: 14, imageUrl: "" };
+        tokenButton.style.backgroundColor = tokenStyle.color || "#2563eb";
+        tokenButton.style.backgroundImage = tokenStyle.imageUrl ? `url("${tokenStyle.imageUrl}")` : "none";
+        tokenButton.style.backgroundSize = "cover";
+        tokenButton.style.backgroundPosition = "center";
+        tokenButton.style.backgroundRepeat = "no-repeat";
+
+        const input = document.createElement("input");
+        input.type = "text";
+        input.className = "player-name-input";
+        input.value = name;
+        input.setAttribute("data-index", String(index));
+        input.setAttribute("placeholder", `플레이어 ${index + 1} 이름`);
+        row.appendChild(tokenButton);
+        row.appendChild(input);
+        playerNameList.appendChild(row);
+      });
+    }
+
+    function openTokenModal(index) {
+      tokenModalPlayerIndex = index;
+      const tokenStyle = playerTokenStyles[index] || { color: "#2563eb", size: 14, imageUrl: "" };
+      tokenColorInput.value = tokenStyle.color || "#2563eb";
+      tokenSizeInput.value = String(Math.min(48, Math.max(8, Number(tokenStyle.size) || 14)));
+      tokenModal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeTokenModal() {
+      tokenModalPlayerIndex = null;
+      tokenModal.setAttribute("aria-hidden", "true");
+    }
+
+    function applyTokenModalToPlayer() {
+      if (tokenModalPlayerIndex === null) return;
+      const tokenStyle = playerTokenStyles[tokenModalPlayerIndex] || { color: "#2563eb", size: 14, imageUrl: "" };
+      tokenStyle.color = tokenColorInput.value || "#2563eb";
+      tokenStyle.size = Math.min(48, Math.max(8, Number(tokenSizeInput.value) || 14));
+      playerTokenStyles[tokenModalPlayerIndex] = tokenStyle;
+
+      renderPlayerNameList();
+      if (lastRenderedTotal !== null) {
+        renderBoard(lastRenderedTotal);
+      }
+      schedulePersistState();
+    }
+
+    function resetAllInputPanelSettings() {
+      // 숫자/보드 기본값
+      numberInput.value = "24";
+      lastRenderedTotal = 24;
+      listLabels = Array.from({ length: 24 }, (_, index) => getListLabel(index + 1));
+      listLabels[0] = "출발점";
+      itemStyles = Array.from({ length: 24 }, () => ({}));
+      roleTexts = Array.from({ length: 24 }, () => "");
+      roleNValues = Array.from({ length: 24 }, () => 3);
+      startBoxIndex = 0;
+      roleTexts[0] = "start";
+
+      // 인원/말 기본값
+      playerCountInput.value = "1";
+      playerNames = ["플레이어 1"];
+      playerTokenStyles = [{ color: "#2563eb", size: 14, imageUrl: "" }];
+      persistPlayerTokenImagesNow();
+      playerPositions = [0];
+      currentPlayerIndex = 0;
+      playerJailTurns = [0];
+      directionSign = 1;
+      renderPlayerNameList();
+
+      // 주사위 기본값
+      dice1Enabled.checked = true;
+      dice2Enabled.checked = false;
+      dice3Enabled.checked = false;
+      dice1MinInput.value = "1";
+      dice1MaxInput.value = "6";
+      dice2MinInput.value = "1";
+      dice2MaxInput.value = "6";
+      dice3MinInput.value = "1";
+      dice3MaxInput.value = "6";
+      diceResult.textContent = "";
+      centerDiceResult.textContent = "";
+      diceTextSizeInput.value = "14";
+      diceTextColorInput.value = "#e5e7eb";
+      diceTextFamilyInput.value = "Arial, sans-serif";
+      syncDiceEnabledUI();
+      applyDiceResultStyle();
+
+      // 텍스트/상자/배경/가운데텍스트 기본값
+      fontSizeInput.value = "10";
+      fontColorInput.value = "#111827";
+      fontFamilyInput.value = "Arial, sans-serif";
+
+      boxShapeInput.value = "square";
+      boxRadiusInput.value = "0";
+      boxFillColorInput.value = "#f4f4f4";
+      boxBorderWidthInput.value = "2";
+      boxBorderColorInput.value = "#333333";
+      boxImageUrl = "";
+      boxImageInput.value = "";
+
+      backgroundColorInput.value = "#ffffff";
+      backgroundImageUrl = "";
+      backgroundImageInput.value = "";
+      persistBackgroundImageNow();
+      pageBgColorInput.value = "#f3f4f6";
+      pageBackgroundImageUrl = "";
+      pageBgImageInput.value = "";
+      persistPageBackgroundImageNow();
+      camSidebarBgColorInput.value = "#111827";
+      camSlotBgColorInput.value = "#111827";
+      camSidebarImageUrl = "";
+      camSlotImageUrl = "";
+      camSidebarImageInput.value = "";
+      camSlotImageInput.value = "";
+      persistCamPanelImagesNow();
+
+      centerTextInput.value = "";
+
+      applyTextStyle();
+      applyBackgroundStyle();
+      applyPageBackgroundStyle();
+      applyCenterText();
+      renderList(lastRenderedTotal);
+      renderBoard(lastRenderedTotal);
+
+      // 열려있던 모달 닫기
+      closeRoleModal();
+      closeCamModal();
+      closeTokenModal();
+      schedulePersistState();
+    }
+
+    function getRectPerimeterPath(total, availableWidth, availableHeight) {
+      const sum = (total + 4) / 2;
+      const ratio = availableWidth / Math.max(availableHeight, 1);
+
+      let cols = Math.round((ratio * sum) / (ratio + 1));
+      cols = Math.max(2, Math.min(sum - 2, cols));
+      const rows = sum - cols;
+
+      const path = [];
+
+      for (let col = 0; col < cols; col += 1) {
+        path.push({ col, row: 0 });
+      }
+      for (let row = 1; row < rows; row += 1) {
+        path.push({ col: cols - 1, row });
+      }
+      for (let col = cols - 2; col >= 0; col -= 1) {
+        path.push({ col, row: rows - 1 });
+      }
+      for (let row = rows - 2; row >= 1; row -= 1) {
+        path.push({ col: 0, row });
+      }
+
+      return { cols, rows, cells: path };
+    }
+
+    function renderBoard(total) {
+      const selectedShape = boxShapeInput.value || "square";
+      const gap = 6;
+      const availableWidth = boxContainer.clientWidth;
+      const availableHeight = boxContainer.clientHeight;
+      const board = getRectPerimeterPath(total, availableWidth, availableHeight);
+      const tileSize = Math.floor(
+        Math.min(
+          (availableWidth - gap * (board.cols - 1)) / board.cols,
+          (availableHeight - gap * (board.rows - 1)) / board.rows
+        )
+      );
+
+      if (tileSize <= 0) {
+        boxContainer.innerHTML = "";
+        return;
+      }
+
+      const boardWidth = board.cols * tileSize + gap * (board.cols - 1);
+      const boardHeight = board.rows * tileSize + gap * (board.rows - 1);
+      const offsetX = Math.floor((availableWidth - boardWidth) / 2);
+      const offsetY = 0;
+
+      boxContainer.innerHTML = "";
+
+      const setShapeStyle = (element, shape, radius) => {
+        element.style.clipPath = "none";
+        element.style.borderRadius = "0";
+        if (shape === "circle") {
+          element.style.borderRadius = "50%";
+        } else if (shape === "rounded") {
+          element.style.borderRadius = `${radius}px`;
+        } else if (shape === "diamond") {
+          element.style.clipPath = "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)";
+        } else if (shape === "ticket") {
+          element.style.clipPath =
+            "polygon(0% 0%, 100% 0%, 100% 35%, 92% 50%, 100% 65%, 100% 100%, 0% 100%, 0% 65%, 8% 50%, 0% 35%)";
+        } else if (shape === "hexagon") {
+          element.style.clipPath =
+            "polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)";
+        }
+      };
+
+      const placeBox = (left, top, label, textStyle, boxStyle, col, row, cols, rows, index) => {
+        let outerWidth = tileSize;
+        let outerHeight = tileSize;
+        let outerLeft = left;
+        let outerTop = top;
+
+        const box = document.createElement("div");
+        box.className = "number-box";
+        box.style.left = `${outerLeft}px`;
+        box.style.top = `${outerTop}px`;
+        box.style.width = `${outerWidth}px`;
+        box.style.height = `${outerHeight}px`;
+        box.style.background = boxStyle.borderColor;
+        setShapeStyle(box, boxStyle.shape, boxStyle.radius);
+
+        const inner = document.createElement("div");
+        inner.className = "number-box-inner";
+        const inset = Math.min(boxStyle.borderWidth, Math.floor(Math.min(outerWidth, outerHeight) / 4));
+        inner.style.left = `${inset}px`;
+        inner.style.top = `${inset}px`;
+        inner.style.width = `${Math.max(0, outerWidth - inset * 2)}px`;
+        inner.style.height = `${Math.max(0, outerHeight - inset * 2)}px`;
+        inner.style.background = boxStyle.fill;
+        inner.style.backgroundImage = boxStyle.imageUrl ? `url("${boxStyle.imageUrl}")` : "none";
+        inner.style.backgroundSize = "cover";
+        inner.style.backgroundPosition = "center";
+        inner.style.backgroundRepeat = "no-repeat";
+        inner.style.fontSize = `${textStyle.size}px`;
+        inner.style.color = textStyle.color;
+        inner.style.fontFamily = textStyle.family;
+        const labelEl = document.createElement("div");
+        labelEl.className = "number-box-label";
+        labelEl.textContent = label;
+        inner.appendChild(labelEl);
+
+        const tokensOnThisCell = [];
+        for (let i = 0; i < playerPositions.length; i += 1) {
+          if (playerPositions[i] === index) {
+            tokensOnThisCell.push(i);
+          }
+        }
+
+        if (tokensOnThisCell.length > 0) {
+          const tokenWrap = document.createElement("div");
+          tokenWrap.className = "start-token-wrap";
+          for (let ti = 0; ti < tokensOnThisCell.length; ti += 1) {
+            const i = tokensOnThisCell[ti];
+            const token = document.createElement("span");
+            token.className = "start-token";
+            const tokenStyle = playerTokenStyles[i] || { color: "#2563eb", size: 14, imageUrl: "" };
+            token.title = playerNames[i] || `플레이어 ${i + 1}`;
+            token.style.width = `${Math.min(48, Math.max(8, Number(tokenStyle.size) || 14))}px`;
+            token.style.height = `${Math.min(48, Math.max(8, Number(tokenStyle.size) || 14))}px`;
+            token.style.backgroundColor = tokenStyle.color || "#2563eb";
+            token.style.backgroundImage = tokenStyle.imageUrl ? `url("${tokenStyle.imageUrl}")` : "none";
+            token.style.backgroundSize = "cover";
+            token.style.backgroundPosition = "center";
+            token.style.backgroundRepeat = "no-repeat";
+            tokenWrap.appendChild(token);
+          }
+          inner.appendChild(tokenWrap);
+        }
+        setShapeStyle(inner, boxStyle.shape, Math.max(0, boxStyle.radius - inset));
+
+        box.appendChild(inner);
+        boxContainer.appendChild(box);
+      };
+
+      const globalBoxStyle = getGlobalBoxStyle();
+      board.cells.forEach(({ col, row }, index) => {
+        const left = offsetX + col * (tileSize + gap);
+        const top = offsetY + row * (tileSize + gap);
+        const label = getDisplayTileLabel(index);
+        const textStyle = getEffectiveStyle(index);
+        const boxStyle = getEffectiveBoxStyle(index, globalBoxStyle);
+        placeBox(left, top, label, textStyle, boxStyle, col, row, board.cols, board.rows, index);
+      });
+    }
+
+    function renderList(total) {
+      numberList.innerHTML = "";
+      for (let i = 1; i <= total; i += 1) {
+        const index = i - 1;
+        const effectiveStyle = getEffectiveStyle(index);
+        const item = document.createElement("li");
+        item.className = "number-list-item";
+
+        const row = document.createElement("div");
+        row.className = "number-list-row";
+
+        const input = document.createElement("input");
+        input.type = "text";
+        input.className = "number-list-input";
+        input.value = getDisplayTileLabel(index);
+        input.readOnly = hasSpecialTile(index);
+        input.setAttribute("data-index", String(index));
+
+        const gearButton = document.createElement("button");
+        gearButton.type = "button";
+        gearButton.className = "item-style-toggle";
+        gearButton.textContent = "⚙";
+        gearButton.setAttribute("data-index", String(index));
+        gearButton.setAttribute("aria-label", `${i}번 리스트 스타일 설정`);
+
+        row.appendChild(input);
+        row.appendChild(gearButton);
+        item.appendChild(row);
+
+        const stylePanel = document.createElement("div");
+        stylePanel.className = "item-style-panel";
+        stylePanel.setAttribute("data-index", String(index));
+
+        stylePanel.innerHTML = `
+          <button class="role-toggle-btn" type="button" data-index="${index}">특수칸</button>
+          <div class="role-current-display">${getSpecialTileStatusText(index)}</div>
+          <div class="role-list-panel" data-index="${index}">
+            <ul class="role-list" data-index="${index}">
+              <li class="role-list-item">
+                <label class="style-label">특수칸</label>
+                <button
+                  class="role-option-btn ${(startBoxIndex === index || roleTexts[index]) ? "selected" : ""}"
+                  type="button"
+                  data-index="${index}"
+                >
+                  ${startBoxIndex === index ? "시작" : roleTexts[index] ? `특수칸: ${getSpecialTileLabel(index)}` : "특수칸 지정"}
+                </button>
+              </li>
+            </ul>
+          </div>
+          
+          <label class="style-label">글자 크기</label>
+          <input class="item-size-input" data-index="${index}" type="number" min="8" max="24" value="${effectiveStyle.size}" />
+          <label class="style-label">글자 색</label>
+          <input class="item-color-input" data-index="${index}" type="color" value="${effectiveStyle.color}" />
+          <label class="style-label">글꼴</label>
+          <select class="item-family-input" data-index="${index}">
+            <option value="Arial, sans-serif">Arial</option>
+            <option value="'Malgun Gothic', sans-serif">Malgun Gothic</option>
+            <option value="'맑은 고딕', sans-serif">맑은 고딕</option>
+            <option value="'Noto Sans KR', sans-serif">Noto Sans KR</option>
+            <option value="'Courier New', monospace">Courier New</option>
+          </select>
+          <label class="style-label">개별 상자 이미지</label>
+          <input class="item-box-image-input" data-index="${index}" type="file" accept="image/*" />
+          <button class="item-box-image-reset" data-index="${index}" type="button">개별 이미지 제거</button>
+          <button class="item-style-reset" data-index="${index}" type="button">전체 설정으로 되돌리기</button>
+        `;
+
+        const familySelect = stylePanel.querySelector(".item-family-input");
+        if (familySelect) {
+          familySelect.value = effectiveStyle.family;
+        }
+
+        item.appendChild(stylePanel);
+        numberList.appendChild(item);
+      }
+    }
+
+    numberList.addEventListener("input", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLInputElement)) {
+        return;
+      }
+
+      if (target.classList.contains("item-size-input")) {
+        const index = Number(target.dataset.index);
+        if (Number.isNaN(index)) {
+          return;
+        }
+        const size = Math.min(24, Math.max(8, Number(target.value) || getGlobalStyle().size));
+        itemStyles[index] = { ...(itemStyles[index] || {}), size };
+        if (lastRenderedTotal !== null) {
+          renderBoard(lastRenderedTotal);
+        }
+        return;
+      }
+
+      if (target.classList.contains("item-color-input")) {
+        const index = Number(target.dataset.index);
+        if (Number.isNaN(index)) {
+          return;
+        }
+        itemStyles[index] = { ...(itemStyles[index] || {}), color: target.value };
+        if (lastRenderedTotal !== null) {
+          renderBoard(lastRenderedTotal);
+        }
+        return;
+      }
+
+      if (target.classList.contains("item-box-image-input")) {
+        return;
+      }
+
+      const index = Number(target.dataset.index);
+      if (Number.isNaN(index)) {
+        return;
+      }
+      if (hasSpecialTile(index)) {
+        target.value = getDisplayTileLabel(index);
+        return;
+      }
+      listLabels[index] = target.value;
+      if (lastRenderedTotal !== null) {
+        renderBoard(lastRenderedTotal);
+      }
+    });
+
+    numberList.addEventListener("change", (event) => {
+      const target = event.target;
+      if (target instanceof HTMLSelectElement && target.classList.contains("item-family-input")) {
+        const index = Number(target.dataset.index);
+        if (Number.isNaN(index)) {
+          return;
+        }
+        itemStyles[index] = { ...(itemStyles[index] || {}), family: target.value };
+        if (lastRenderedTotal !== null) {
+          renderBoard(lastRenderedTotal);
+        }
+        return;
+      }
+
+      if (target instanceof HTMLInputElement && target.classList.contains("item-box-image-input")) {
+        const index = Number(target.dataset.index);
+        if (Number.isNaN(index)) {
+          return;
+        }
+        const file = target.files && target.files[0];
+        if (!file) {
+          return;
+        }
+        fileToDataUrl(file).then((itemImageUrl) => {
+          itemStyles[index] = { ...(itemStyles[index] || {}), boxImageUrl: itemImageUrl };
+          if (lastRenderedTotal !== null) {
+            renderBoard(lastRenderedTotal);
+          }
+          schedulePersistState();
+        });
+      }
+    });
+
+    numberList.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) {
+        return;
+      }
+      const toggleButton = target.closest(".item-style-toggle");
+      if (toggleButton instanceof HTMLButtonElement) {
+        const item = toggleButton.closest(".number-list-item");
+        if (item) {
+          item.classList.toggle("style-open");
+        }
+        return;
+      }
+
+      const resetButton = target.closest(".item-style-reset");
+      if (resetButton instanceof HTMLButtonElement) {
+        const index = Number(resetButton.dataset.index);
+        if (Number.isNaN(index)) {
+          return;
+        }
+        itemStyles[index] = {};
+        renderList(lastRenderedTotal);
+        if (lastRenderedTotal !== null) {
+          renderBoard(lastRenderedTotal);
+        }
+        return;
+      }
+
+      const roleToggleButton = target.closest(".role-toggle-btn");
+      if (roleToggleButton instanceof HTMLButtonElement) {
+        const index = Number(roleToggleButton.dataset.index);
+        if (!Number.isNaN(index)) {
+          const panel = roleToggleButton.closest(".item-style-panel");
+          if (panel) {
+            panel.classList.add("role-open");
+          }
+          openRoleModal(index);
+          return;
+        }
+
+        const panel = roleToggleButton.closest(".item-style-panel");
+        if (panel) {
+          panel.classList.toggle("role-open");
+        }
+        return;
+      }
+
+      const roleOptionButton = target.closest(".role-option-btn");
+      if (roleOptionButton instanceof HTMLButtonElement) {
+        const index = Number(roleOptionButton.dataset.index);
+        if (Number.isNaN(index)) {
+          return;
+        }
+        openRoleModal(index);
+        return;
+      }
+
+      const itemImageResetButton = target.closest(".item-box-image-reset");
+      if (itemImageResetButton instanceof HTMLButtonElement) {
+        const index = Number(itemImageResetButton.dataset.index);
+        if (Number.isNaN(index)) {
+          return;
+        }
+        itemStyles[index] = { ...(itemStyles[index] || {}), boxImageUrl: undefined };
+        const panel = itemImageResetButton.closest(".item-style-panel");
+        if (panel) {
+          const input = panel.querySelector(".item-box-image-input");
+          if (input instanceof HTMLInputElement) {
+            input.value = "";
+          }
+        }
+        if (lastRenderedTotal !== null) {
+          renderBoard(lastRenderedTotal);
+        }
+      }
+    });
+
+    fontSizeInput.addEventListener("input", () => {
+      applyTextStyle();
+    });
+    fontColorInput.addEventListener("input", () => {
+      applyTextStyle();
+    });
+    fontFamilyInput.addEventListener("change", () => {
+      applyTextStyle();
+    });
+    boxShapeInput.addEventListener("change", () => {
+      applyBoxStyle();
+    });
+    boxRadiusInput.addEventListener("input", () => {
+      applyBoxStyle();
+    });
+    boxFillColorInput.addEventListener("input", () => {
+      applyBoxStyle();
+    });
+    boxBorderWidthInput.addEventListener("input", () => {
+      applyBoxStyle();
+    });
+    boxBorderColorInput.addEventListener("input", () => {
+      applyBoxStyle();
+    });
+    boxImageInput.addEventListener("change", () => {
+      const file = boxImageInput.files && boxImageInput.files[0];
+      if (!file) {
+        return;
+      }
+      fileToDataUrl(file).then((dataUrl) => {
+        boxImageUrl = dataUrl;
+        applyBoxStyle();
+        schedulePersistState();
+      });
+    });
+    clearBoxImageBtn.addEventListener("click", () => {
+      boxImageUrl = "";
+      boxImageInput.value = "";
+      applyBoxStyle();
+    });
+    backgroundColorInput.addEventListener("input", () => {
+      applyBackgroundStyle();
+    });
+    backgroundImageInput.addEventListener("change", () => {
+      const file = backgroundImageInput.files && backgroundImageInput.files[0];
+      if (!file) {
+        return;
+      }
+      fileToDataUrl(file).then((dataUrl) => {
+        resizeImageDataUrl(dataUrl).then((resizedDataUrl) => {
+          backgroundImageUrl = resizedDataUrl;
+          applyBackgroundStyle();
+          persistBackgroundImageNow();
+          persistStateNow();
+        });
+      });
+    });
+    clearBackgroundImageBtn.addEventListener("click", () => {
+      backgroundImageUrl = "";
+      backgroundImageInput.value = "";
+      applyBackgroundStyle();
+      persistBackgroundImageNow();
+      persistStateNow();
+    });
+    centerTextInput.addEventListener("input", () => {
+      applyCenterText();
+    });
+    pageBgColorInput.addEventListener("input", () => {
+      applyPageBackgroundStyle();
+      persistPageBackgroundImageNow();
+      persistStateNow();
+    });
+    pageBgImageInput.addEventListener("change", () => {
+      const file = pageBgImageInput.files && pageBgImageInput.files[0];
+      if (!file) {
+        return;
+      }
+      fileToDataUrl(file).then((dataUrl) => {
+        resizeImageDataUrl(dataUrl, 1600).then((resizedDataUrl) => {
+          pageBackgroundImageUrl = resizedDataUrl;
+          applyPageBackgroundStyle();
+          persistPageBackgroundImageNow();
+          persistStateNow();
+        });
+      });
+    });
+    clearPageBgImageBtn.addEventListener("click", () => {
+      pageBackgroundImageUrl = "";
+      pageBgImageInput.value = "";
+      applyPageBackgroundStyle();
+      persistPageBackgroundImageNow();
+      persistStateNow();
+    });
+    camPanelTitleInput.addEventListener("input", applyCamPanelStyle);
+    camPanelHelpInput.addEventListener("input", applyCamPanelStyle);
+    camPanelLabelInput.addEventListener("input", applyCamPanelStyle);
+    camSidebarBgColorInput.addEventListener("input", applyCamPanelStyle);
+    camSlotBgColorInput.addEventListener("input", applyCamPanelStyle);
+    camSidebarImageInput.addEventListener("change", () => {
+      const file = camSidebarImageInput.files && camSidebarImageInput.files[0];
+      if (!file) {
+        return;
+      }
+      fileToDataUrl(file).then((dataUrl) => {
+        resizeImageDataUrl(dataUrl, 1280).then((resizedDataUrl) => {
+          camSidebarImageUrl = resizedDataUrl;
+          applyCamPanelStyle();
+          persistCamPanelImagesNow();
+          persistStateNow();
+        });
+      });
+    });
+    clearCamSidebarImageBtn.addEventListener("click", () => {
+      camSidebarImageUrl = "";
+      camSidebarImageInput.value = "";
+      applyCamPanelStyle();
+      persistCamPanelImagesNow();
+      persistStateNow();
+    });
+    camSlotImageInput.addEventListener("change", () => {
+      const file = camSlotImageInput.files && camSlotImageInput.files[0];
+      if (!file) {
+        return;
+      }
+      fileToDataUrl(file).then((dataUrl) => {
+        resizeImageDataUrl(dataUrl, 1280).then((resizedDataUrl) => {
+          camSlotImageUrl = resizedDataUrl;
+          applyCamPanelStyle();
+          persistCamPanelImagesNow();
+          persistStateNow();
+        });
+      });
+    });
+    clearCamSlotImageBtn.addEventListener("click", () => {
+      camSlotImageUrl = "";
+      camSlotImageInput.value = "";
+      applyCamPanelStyle();
+      persistCamPanelImagesNow();
+      persistStateNow();
+    });
+
+    function rerenderBoardAfterSidebarLayoutChange() {
+      if (lastRenderedTotal === null) {
+        return;
+      }
+
+      // 패딩/사이드바 전환 애니메이션 이후까지 포함해 재계산
+      requestAnimationFrame(() => {
+        renderBoard(lastRenderedTotal);
+      });
+      setTimeout(() => {
+        renderBoard(lastRenderedTotal);
+      }, 220);
+      setTimeout(() => {
+        renderBoard(lastRenderedTotal);
+      }, 420);
+    }
+
+    function openCamModal() {
+      camModal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeCamModal() {
+      camModal.setAttribute("aria-hidden", "true");
+    }
+
+    function openPageSettingsModal() {
+      pageSettingsModal.setAttribute("aria-hidden", "false");
+    }
+
+    function closePageSettingsModal() {
+      pageSettingsModal.setAttribute("aria-hidden", "true");
+    }
+
+    function resetGamePiecesToStart() {
+      const startCell = startBoxIndex ?? 0;
+      const playerCount = Math.max(1, Number(playerCountInput.value) || 1);
+      playerPositions = Array.from({ length: playerCount }, () => startCell);
+      playerJailTurns = Array.from({ length: playerCount }, () => 0);
+      directionSign = 1;
+      currentPlayerIndex = 0;
+
+      if (lastRenderedTotal !== null) {
+        renderBoard(lastRenderedTotal);
+      }
+      schedulePersistState();
+    }
+
+    toggleSidebarBtn.addEventListener("click", () => {
+      const isCollapsed = document.body.classList.toggle("sidebar-collapsed");
+      toggleSidebarBtn.setAttribute("aria-label", isCollapsed ? "사이드바 펼치기" : "사이드바 접기");
+      rerenderBoardAfterSidebarLayoutChange();
+    });
+
+    openSidebarBtn.addEventListener("click", () => {
+      document.body.classList.remove("sidebar-collapsed");
+      toggleSidebarBtn.setAttribute("aria-label", "사이드바 접기");
+      rerenderBoardAfterSidebarLayoutChange();
+    });
+
+    resetAllSettingsBtn.addEventListener("click", resetAllInputPanelSettings);
+
+    openCamSettingsBtn.addEventListener("click", openCamModal);
+    openPageSettingsBtn.addEventListener("click", openPageSettingsModal);
+    resetGameBtn.addEventListener("click", resetGamePiecesToStart);
+
+    decreasePlayerBtn.addEventListener("click", () => {
+      const current = Math.max(1, Number(playerCountInput.value) || 1);
+      playerCountInput.value = String(Math.max(1, current - 1));
+      renderPlayerNameList();
+      if (lastRenderedTotal !== null) {
+        renderBoard(lastRenderedTotal);
+      }
+    });
+
+    increasePlayerBtn.addEventListener("click", () => {
+      const current = Math.max(1, Number(playerCountInput.value) || 1);
+      playerCountInput.value = String(current + 1);
+      renderPlayerNameList();
+      if (lastRenderedTotal !== null) {
+        renderBoard(lastRenderedTotal);
+      }
+    });
+
+    playerNameList.addEventListener("input", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLInputElement)) {
+        return;
+      }
+      const index = Number(target.dataset.index);
+      if (Number.isNaN(index)) {
+        return;
+      }
+      playerNames[index] = target.value;
+      if (lastRenderedTotal !== null) {
+        renderBoard(lastRenderedTotal);
+      }
+    });
+
+    playerNameList.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) {
+        return;
+      }
+      const tokenButton = target.closest(".player-token-btn");
+      if (!(tokenButton instanceof HTMLButtonElement)) {
+        return;
+      }
+      const index = Number(tokenButton.dataset.index);
+      if (Number.isNaN(index)) {
+        return;
+      }
+      openTokenModal(index);
+    });
+
+    tokenColorInput.addEventListener("input", applyTokenModalToPlayer);
+    tokenSizeInput.addEventListener("input", applyTokenModalToPlayer);
+    tokenImageInput.addEventListener("change", () => {
+      if (tokenModalPlayerIndex === null) return;
+      const file = tokenImageInput.files && tokenImageInput.files[0];
+      if (!file) return;
+      fileToDataUrl(file).then((dataUrl) => {
+        resizeImageDataUrl(dataUrl, 640).then((resizedDataUrl) => {
+          const tokenStyle = playerTokenStyles[tokenModalPlayerIndex] || { color: "#2563eb", size: 14, imageUrl: "" };
+          tokenStyle.imageUrl = resizedDataUrl;
+          playerTokenStyles[tokenModalPlayerIndex] = tokenStyle;
+          applyTokenModalToPlayer();
+          persistPlayerTokenImagesNow();
+          persistStateNow();
+        });
+      });
+    });
+    clearTokenImageBtn.addEventListener("click", () => {
+      if (tokenModalPlayerIndex === null) return;
+      const tokenStyle = playerTokenStyles[tokenModalPlayerIndex] || { color: "#2563eb", size: 14, imageUrl: "" };
+      tokenStyle.imageUrl = "";
+      playerTokenStyles[tokenModalPlayerIndex] = tokenStyle;
+      tokenImageInput.value = "";
+      applyTokenModalToPlayer();
+      persistPlayerTokenImagesNow();
+      persistStateNow();
+    });
+
+    toggleRightSidebarBtn.addEventListener("click", () => {
+      const isCollapsed = document.body.classList.toggle("right-sidebar-collapsed");
+      toggleRightSidebarBtn.setAttribute("aria-label", isCollapsed ? "오른쪽 사이드바 펼치기" : "오른쪽 사이드바 접기");
+      rerenderBoardAfterSidebarLayoutChange();
+    });
+
+    openRightSidebarBtn.addEventListener("click", () => {
+      document.body.classList.remove("right-sidebar-collapsed");
+      toggleRightSidebarBtn.setAttribute("aria-label", "오른쪽 사이드바 접기");
+      rerenderBoardAfterSidebarLayoutChange();
+    });
+
+    checkBtn.addEventListener("click", () => {
+      const value = numberInput.value.trim();
+
+      if (value.length === 0) {
+        boxContainer.innerHTML = "";
+        numberList.innerHTML = "";
+        listLabels = [];
+        itemStyles = [];
+        roleTexts = [];
+        roleNValues = [];
+        startBoxIndex = null;
+        return;
+      }
+
+      const parsed = Number(value);
+
+      if (parsed < 6) {
+        boxContainer.innerHTML = "";
+        numberList.innerHTML = "";
+        listLabels = [];
+        itemStyles = [];
+        roleTexts = [];
+        roleNValues = [];
+        startBoxIndex = null;
+        return;
+      }
+
+      if (parsed % 6 !== 0) {
+        boxContainer.innerHTML = "";
+        numberList.innerHTML = "";
+        listLabels = [];
+        itemStyles = [];
+        roleTexts = [];
+        roleNValues = [];
+        startBoxIndex = null;
+        return;
+      }
+
+      lastRenderedTotal = parsed;
+      listLabels = Array.from({ length: parsed }, (_, index) => getListLabel(index + 1));
+      itemStyles = Array.from({ length: parsed }, () => ({}));
+      roleTexts = Array.from({ length: parsed }, () => "");
+      roleNValues = Array.from({ length: parsed }, () => 3);
+      startBoxIndex = 0;
+      roleTexts[0] = "start";
+      listLabels[0] = "출발점";
+      playerPositions = Array.from({ length: Math.max(1, Number(playerCountInput.value) || 1) }, () => 0);
+      currentPlayerIndex = 0;
+      playerJailTurns = Array.from({ length: Math.max(1, Number(playerCountInput.value) || 1) }, () => 0);
+      directionSign = 1;
+      renderList(parsed);
+      renderBoard(lastRenderedTotal);
+      schedulePersistState();
+    });
+
+    window.addEventListener("resize", () => {
+      if (lastRenderedTotal !== null) {
+        renderBoard(lastRenderedTotal);
+      }
+    });
+
+    applyTextStyle();
+    applyBackgroundStyle();
+    applyPageBackgroundStyle();
+    applyCenterText();
+    applyCamPanelStyle();
+    renderPlayerNameList();
+    initNumberOptions();
+
+    // 페이지 로드시 기본값(24개) 상자/리스트 렌더링
+    lastRenderedTotal = Number(numberInput.value);
+    listLabels = Array.from({ length: lastRenderedTotal }, (_, index) => getListLabel(index + 1));
+    itemStyles = Array.from({ length: lastRenderedTotal }, () => ({}));
+    roleTexts = Array.from({ length: lastRenderedTotal }, () => "");
+    roleNValues = Array.from({ length: lastRenderedTotal }, () => 3);
+    startBoxIndex = 0;
+    roleTexts[0] = "start";
+    listLabels[0] = "출발점";
+    playerPositions = Array.from({ length: Math.max(1, Number(playerCountInput.value) || 1) }, () => 0);
+    currentPlayerIndex = 0;
+    playerJailTurns = Array.from({ length: Math.max(1, Number(playerCountInput.value) || 1) }, () => 0);
+    directionSign = 1;
+    renderList(lastRenderedTotal);
+    renderBoard(lastRenderedTotal);
+
+    // 특수칸 모달 이벤트
+    roleSelect.addEventListener("change", () => {
+      syncRoleNInputUI(true);
+      updateRoleEffectText();
+    });
+    roleNInput.addEventListener("input", updateRoleEffectText);
+    roleApplyBtn.addEventListener("click", applyRoleFromModal);
+    roleClearBtn.addEventListener("click", () => {
+      roleSelect.value = "";
+      updateRoleEffectText();
+      applyRoleFromModal();
+    });
+    roleModalCloseBtn.addEventListener("click", closeRoleModal);
+    const roleBackdrop = roleModal.querySelector(".role-modal-backdrop");
+    if (roleBackdrop) {
+      roleBackdrop.addEventListener("click", (e) => {
+        if (e.target instanceof HTMLElement && e.target.dataset.close === "1") {
+          closeRoleModal();
+        }
+      });
+    }
+    camModalCloseBtn.addEventListener("click", closeCamModal);
+    const camBackdrop = camModal.querySelector(".role-modal-backdrop");
+    if (camBackdrop) {
+      camBackdrop.addEventListener("click", (e) => {
+        if (e.target instanceof HTMLElement && e.target.dataset.closeCam === "1") {
+          closeCamModal();
+        }
+      });
+    }
+    pageSettingsModalCloseBtn.addEventListener("click", closePageSettingsModal);
+    const pageSettingsBackdrop = pageSettingsModal.querySelector(".role-modal-backdrop");
+    if (pageSettingsBackdrop) {
+      pageSettingsBackdrop.addEventListener("click", (e) => {
+        if (e.target instanceof HTMLElement && e.target.dataset.closePage === "1") {
+          closePageSettingsModal();
+        }
+      });
+    }
+    tokenModalCloseBtn.addEventListener("click", closeTokenModal);
+    const tokenBackdrop = tokenModal.querySelector(".role-modal-backdrop");
+    if (tokenBackdrop) {
+      tokenBackdrop.addEventListener("click", (e) => {
+        if (e.target instanceof HTMLElement && e.target.dataset.closeToken === "1") {
+          closeTokenModal();
+        }
+      });
+    }
+    planeMoveApplyBtn.addEventListener("click", applyPlaneMoveSelection);
+    planeMoveModalCloseBtn.addEventListener("click", cancelPlaneMoveSelection);
+    const planeBackdrop = planeMoveModal.querySelector(".role-modal-backdrop");
+    if (planeBackdrop) {
+      planeBackdrop.addEventListener("click", (e) => {
+        if (e.target instanceof HTMLElement && e.target.dataset.closePlane === "1") {
+          cancelPlaneMoveSelection();
+        }
+      });
+    }
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && roleModal.getAttribute("aria-hidden") === "false") {
+        closeRoleModal();
+      }
+      if (e.key === "Escape" && camModal.getAttribute("aria-hidden") === "false") {
+        closeCamModal();
+      }
+      if (e.key === "Escape" && pageSettingsModal.getAttribute("aria-hidden") === "false") {
+        closePageSettingsModal();
+      }
+      if (e.key === "Escape" && tokenModal.getAttribute("aria-hidden") === "false") {
+        closeTokenModal();
+      }
+      if (e.key === "Escape" && planeMoveModal.getAttribute("aria-hidden") === "false") {
+        cancelPlaneMoveSelection();
+      }
+    });
+
+    syncDiceEnabledUI();
+    dice1Enabled.addEventListener("change", syncDiceEnabledUI);
+    dice2Enabled.addEventListener("change", syncDiceEnabledUI);
+    dice3Enabled.addEventListener("change", syncDiceEnabledUI);
+    dice1MinInput.addEventListener("input", enforceDiceRangeValues);
+    dice1MaxInput.addEventListener("input", enforceDiceRangeValues);
+    dice2MinInput.addEventListener("input", enforceDiceRangeValues);
+    dice2MaxInput.addEventListener("input", enforceDiceRangeValues);
+    dice3MinInput.addEventListener("input", enforceDiceRangeValues);
+    dice3MaxInput.addEventListener("input", enforceDiceRangeValues);
+    diceTextSizeInput.addEventListener("input", applyDiceResultStyle);
+    diceTextColorInput.addEventListener("input", applyDiceResultStyle);
+    diceTextFamilyInput.addEventListener("change", applyDiceResultStyle);
+    rollDiceBtn.addEventListener("click", rollDice);
+
+    // 주사위 아이콘 영역을 클릭했을 때만 굴림
+    centerDiceOverlay.addEventListener("click", rollDice);
+
+    // 변경 사항 자동 저장
+    document.addEventListener("input", schedulePersistState, true);
+    document.addEventListener("change", schedulePersistState, true);
+    window.addEventListener("beforeunload", persistStateNow);
+
+    // 저장된 상태 복원 (새로고침/재방문 대응)
+    restoreStateFromStorage();
+    applyDiceResultStyle();
+  </script>
+</body>
+</html>
